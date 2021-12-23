@@ -31,7 +31,13 @@ export class DeleteTaskDialogComponent implements OnInit {
       take(1)
     )
     .subscribe(result => {
-      this.dialogRef.close(result);
+      if(result){
+        let tasks = this.taskService.tasks.filter(el => 
+          el.id != this.data.id
+        )
+        this.taskService.updateTasksList(tasks);
+      }
+      this.dialogRef.close();
     });
     
   }

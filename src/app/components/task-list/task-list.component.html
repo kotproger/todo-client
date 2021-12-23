@@ -1,4 +1,4 @@
-<div *ngIf="(taskList$ | async) as tasks; else elseBlock">
+<div *ngIf="(taskService.tasks$ | async) as tasks; else elseBlock">
     <button mat-raised-button>
         {{tasks.length ? "Add task" : "Create first task"}}
     </button>

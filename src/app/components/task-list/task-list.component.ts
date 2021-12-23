@@ -16,18 +16,17 @@ import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.co
 })
 export class TaskListComponent implements OnInit {
 
-  taskList$?: Observable<Task[]>;
   displayedColumns: string[] = ['id', 'text', 'created_at', 'action'];
 
   constructor(
-    private taskService: TaskService,
+    public taskService: TaskService,
     public dialog: MatDialog
   ) { 
     
   }
 
   ngOnInit(): void {
-    this.taskList$ = this.taskService.getTasks();
+    this.taskService.getTasks();
   }
 
   onDelete(task:Task){

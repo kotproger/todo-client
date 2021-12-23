@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -22,7 +22,8 @@ export class EditTaskDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EditTaskDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Task,
     private taskService: TaskService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private ref: ChangeDetectorRef
   ) { 
     this.editedTask = {
       id: data.id,
@@ -37,17 +38,22 @@ export class EditTaskDialogComponent implements OnInit {
   onYesClick(): void {
     this.inProgress = true;
     this.taskService.updateTask(this.editedTask)
-    .pipe(
-      take(1)
-    )
+    
     .subscribe(
-      result => {
+      response => {
         this.inProgress = false;
-        //this.dialogRef.close(result);
+        let tasks = this.taskService.tasks.map(el => 
+          el.id === response.id 
+          ? response
+          : el)
+        this.taskService.updateTasksList(tasks);
+        this.dialogRef.close();
       },
       err => {
         this.inProgress = false;
-        this.snackBar.open(err, 'error');
+        this.ref.markForCheck();
+        if(err.error!.errors!)
+          this.snackBar.open(err.error.errors[0], 'Error');
       }
     );
     
