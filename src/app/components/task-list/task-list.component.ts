@@ -1,7 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ComponentFactoryResolver } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 import { TaskService } from 'src/app/services/task.service';
+import { Task } from 'src/app/models/task.model';
+import { DeleteTaskDialogComponent } from '../delete-task-dialog/delete-task-dialog.component';
+import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
 
 @Component({
   selector: 'app-task-list',
@@ -11,17 +16,46 @@ import { TaskService } from 'src/app/services/task.service';
 })
 export class TaskListComponent implements OnInit {
 
+  taskList$?: Observable<Task[]>;
+  displayedColumns: string[] = ['id', 'text', 'created_at', 'action'];
+
   constructor(
-    private taskService: TaskService
-  ) { }
+    private taskService: TaskService,
+    public dialog: MatDialog
+  ) { 
+    
+  }
 
   ngOnInit(): void {
-    this.taskService.getTasks().pipe(
-      take(1)
-    )
-    .subscribe(result => {
+    this.taskList$ = this.taskService.getTasks();
+  }
+
+  onDelete(task:Task){
+    const dialogRef = this.dialog.open(DeleteTaskDialogComponent, {
+      width: '350px',
+      data: task,
+      hasBackdrop: true,
+      disableClose: true 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-    })
+  
+    });
+  }
+  
+  onEdit(task:Task){
+    const dialogRef = this.dialog.open(EditTaskDialogComponent, {
+      width: '350px',
+      data: task,
+      hasBackdrop: true,
+      disableClose: true 
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+  
+    });
   }
 
 }

@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Task } from '../models/task.model';
 import { ResponseHttp } from '../models/http.model';
+import 'rxjs/add/observable/throw';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,8 @@ export class TaskService {
     )
   }
 
-  updateTask(Task: Task) : Observable<Task> {
-    return this.http.put<ResponseHttp<Task>>(environment.phpUrl + 'api/tasks/' + Task.id, Task).pipe(
+  updateTask(task: Task) : Observable<Task> {
+    return this.http.put<ResponseHttp<Task>>(environment.phpUrl + 'api/tasks/' + task.id, task).pipe(
       map((responce) => {
         return responce.data!;
       }),
@@ -43,8 +44,20 @@ export class TaskService {
       })
     )
   }
-  storeTask(Task: Task) : Observable<Task> {
-    return this.http.post<ResponseHttp<Task>>(environment.phpUrl + 'api/tasks', Task).pipe(
+
+  deleteTask(id: number) : Observable<Boolean> {
+    return this.http.delete<ResponseHttp<Boolean>>(environment.phpUrl + 'api/tasks/' + id).pipe(
+      map((responce) => {
+        return responce.data!;
+      }),
+      catchError((error) => {
+        return throwError(error)
+      })
+    )
+  }
+
+  storeTask(task: Task) : Observable<Task> {
+    return this.http.post<ResponseHttp<Task>>(environment.phpUrl + 'api/tasks', task).pipe(
       map((responce) => {
         return responce.data!;
       }),

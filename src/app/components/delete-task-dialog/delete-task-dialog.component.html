@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Delete task: {{data.id}}</h1>
+<div mat-dialog-content>
+    <p *ngIf="!inProgress">Are you sure?</p>
+    <mat-progress-bar mode="indeterminate" *ngIf="inProgress"></mat-progress-bar>
+</div>
+<div mat-dialog-actions>
+    <ng-container *ngIf="!inProgress">
+        <button mat-button (click)="onNoClick()">Cansel</button>
+        <button mat-button (click)="onYesClick()" cdkFocusInitial>Ok</button>
+    </ng-container>
+</div>
