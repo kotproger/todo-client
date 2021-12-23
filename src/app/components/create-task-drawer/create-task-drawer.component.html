@@ -1,0 +1,20 @@
+<mat-toolbar>
+    <span>My App</span>
+    <span class="spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Close"
+        (click)="cancelTask.emit(true)">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Text:</mat-label>
+    <textarea matInput placeholder="Enter task here" rows="6"  [(ngModel)]="taskText" #ctrl="ngModel"></textarea>
+</mat-form-field>
+
+<mat-progress-bar mode="indeterminate" *ngIf="inProgress"></mat-progress-bar>
+
+<button mat-raised-button
+    [disabled] = "!taskText || inProgress"
+    (click)="addNewTask()">
+    Add new task
+</button>

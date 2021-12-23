@@ -1,1 +1,9 @@
-<app-task-list></app-task-list>
+
+<mat-drawer-container class="example-container">
+    <mat-drawer mode="over" [(opened)]="opened">
+        <app-create-task-drawer (cancelTask)="cancelTask()"></app-create-task-drawer>
+    </mat-drawer>
+    <mat-drawer-content>
+        <app-task-list (createTask)="createTask()"></app-task-list>
+    </mat-drawer-content>
+</mat-drawer-container>

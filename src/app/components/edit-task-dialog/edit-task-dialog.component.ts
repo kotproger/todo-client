@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Task } from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task.service';
@@ -42,11 +41,7 @@ export class EditTaskDialogComponent implements OnInit {
     .subscribe(
       response => {
         this.inProgress = false;
-        let tasks = this.taskService.tasks.map(el => 
-          el.id === response.id 
-          ? response
-          : el)
-        this.taskService.updateTasksList(tasks);
+        this.taskService.updateTasksList(response);
         this.dialogRef.close();
       },
       err => {

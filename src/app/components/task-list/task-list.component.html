@@ -1,11 +1,9 @@
 <div *ngIf="(taskService.tasks$ | async) as tasks; else elseBlock">
-    <button mat-raised-button>
+    <button mat-raised-button
+        (click)="createTask.emit(true)">
         {{tasks.length ? "Add task" : "Create first task"}}
     </button>
     <table mat-table [dataSource]="tasks">
-
-        <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
       
         <!-- id Column -->
         <ng-container matColumnDef="id">
@@ -42,7 +40,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         
-      </table>
+    </table>
 
 </div>
 <ng-template #elseBlock>

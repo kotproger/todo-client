@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'todo-client';
+
+  public opened:boolean = false;
+
+  createTask(){
+    this.opened = true;
+  }
+
+  cancelTask(){
+    this.opened = false;
+  }
 }

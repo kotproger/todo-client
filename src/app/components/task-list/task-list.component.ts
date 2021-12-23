@@ -1,7 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 
 import { TaskService } from 'src/app/services/task.service';
 import { Task } from 'src/app/models/task.model';
@@ -15,6 +13,8 @@ import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.co
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TaskListComponent implements OnInit {
+  
+  @Output() createTask = new EventEmitter<boolean>();
 
   displayedColumns: string[] = ['id', 'text', 'created_at', 'action'];
 
